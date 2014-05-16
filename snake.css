@@ -1,0 +1,22 @@
+table {
+	border-spacing: 0;
+}
+
+td {
+	border-left: 1px solid #000;
+	border-top: 1px solid #000;
+	height: 30px;
+	width: 30px;
+}
+
+td.head {
+	background-color: green;
+}
+
+td:last-child {
+	border-right: 1px solid #000;
+}
+
+tr:last-child td {
+	border-bottom: 1px solid #000;
+}

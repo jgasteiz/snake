@@ -1,3 +1,7 @@
+body.death {
+	background-color: #991010;
+}
+
 table {
 	border-spacing: 0;
 }
@@ -9,8 +13,20 @@ td {
 	width: 30px;
 }
 
+td.body {
+	background-color: #2BB22B !important;
+}
+
 td.head {
-	background-color: green;
+	background-color: #1C841C !important;
+}
+
+td.bit {
+	background-color: #FFA500;
+}
+
+td.food {
+	background-color: #8BB22B;
 }
 
 td:last-child {

@@ -1,38 +1,49 @@
+body {
+	background-color: #5fc248;
+}
+
 body.death {
-	background-color: #991010;
+	background-color: #a6393d;
+}
+
+body.death table {
+	background-image: url(img/red-grass-no-border.png) !important;
 }
 
 table {
+	background-image: url(img/grass-no-border.png);
 	border-spacing: 0;
+	margin: 0 auto;
 }
 
 td {
-	border-left: 1px solid #000;
-	border-top: 1px solid #000;
+	background-size: contain;
+	border-left: 1px solid rgba(0, 0, 0, 0.2);
+	border-top: 1px solid rgba(0, 0, 0, 0.2);
 	height: 30px;
 	width: 30px;
 }
 
-td.body {
-	background-color: #2BB22B !important;
-}
-
-td.head {
-	background-color: #1C841C !important;
-}
-
 td.bit {
-	background-color: #FFA500;
+	background-image: url(img/letter.png);
 }
 
 td.food {
-	background-color: #8BB22B;
+	background-image: url(img/bug.png);
+}
+
+td.body {
+	background-image: url(img/body.png);
+}
+
+td.head {
+	background-image: url(img/body.png);
 }
 
 td:last-child {
-	border-right: 1px solid #000;
+	border-right: 1px solid rgba(0, 0, 0, 0.2);
 }
 
 tr:last-child td {
-	border-bottom: 1px solid #000;
+	border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 }

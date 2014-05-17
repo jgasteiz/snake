@@ -8,45 +8,45 @@ app.Floor = function() {
     this.sizeY = this.el.getElementsByTagName('tr').length - 1;
 
     // Mapping for floor text.
-    this.letters = [
+    this.letters = {
         // Siete
         // S
-        [{
-            x: 6,
-            y: 2
-        }, {
-            x: 5,
-            y: 2
-        }, {
-            x: 4,
-            y: 2
-        }, {
-            x: 4,
-            y: 3
-        }, {
-            x: 4,
-            y: 4
-        }, {
-            x: 5,
-            y: 4
-        }, {
-            x: 6,
-            y: 4
-        }, , {
-            x: 6,
-            y: 5
-        }, , {
-            x: 6,
-            y: 6
-        }, , {
-            x: 5,
-            y: 6
-        }, , {
-            x: 4,
-            y: 6
+        's': [{
+                x: 6,
+                y: 2
+            }, {
+                x: 5,
+                y: 2
+            }, {
+                x: 4,
+                y: 2
+            }, {
+                x: 4,
+                y: 3
+            }, {
+                x: 4,
+                y: 4
+            }, {
+                x: 5,
+                y: 4
+            }, {
+                x: 6,
+                y: 4
+            }, , {
+                x: 6,
+                y: 5
+            }, , {
+                x: 6,
+                y: 6
+            }, , {
+                x: 5,
+                y: 6
+            }, , {
+                x: 4,
+                y: 6
         }],
         // I
-        [{
+        'i1': [{
             x: 8,
             y: 2
         }, {
@@ -63,7 +63,7 @@ app.Floor = function() {
             y: 6
         }],
         // E
-        [{
+        'e1': [{
             x: 10,
             y: 2
         }, {
@@ -95,7 +95,7 @@ app.Floor = function() {
             y: 6
         }],
         // T
-        [{
+        't': [{
             x: 14,
             y: 2
         }, {
@@ -118,7 +118,7 @@ app.Floor = function() {
             y: 6
         }],
         // E
-        [{
+        'e2': [{
             x: 18,
             y: 2
         }, {
@@ -151,7 +151,7 @@ app.Floor = function() {
         }],
         // De
         // D
-        [{
+        'd': [{
             x: 10,
             y: 8
         }, {
@@ -183,7 +183,7 @@ app.Floor = function() {
             y: 11
         }],
         // E
-        [{
+        'e': [{
             x: 14,
             y: 8
         }, {
@@ -216,7 +216,7 @@ app.Floor = function() {
         }],
         // Junio
         // J
-        [{
+        'j': [{
             x: 4,
             y: 14
         }, {
@@ -248,7 +248,7 @@ app.Floor = function() {
             y: 17
         }],
         // U
-        [{
+        'u': [{
             x: 8,
             y: 14
         }, {
@@ -283,7 +283,7 @@ app.Floor = function() {
             y: 18
         }],
         // N
-        [{
+        'n': [{
             x: 12,
             y: 14
         }, {
@@ -321,7 +321,7 @@ app.Floor = function() {
             y: 18
         }],
         // I
-        [{
+        'i2': [{
             x: 17,
             y: 14
         }, {
@@ -338,7 +338,7 @@ app.Floor = function() {
             y: 18
         }],
         // O
-        [{
+        'o': [{
             x: 19,
             y: 14
         }, {
@@ -375,7 +375,20 @@ app.Floor = function() {
             x: 21,
             y: 18
         }]
-    ];
+    };
+
+    this.init();
+};
+
+app.Floor.prototype.init = function() {
+    this.remainingWords = [];
+    for (var _i in this.letters) {
+        this.remainingWords.push({
+            letter: _i,
+            coordinates: this.letters[_i],
+            timesEated: 0
+        });
+    }
 };
 
 /**
@@ -389,6 +402,16 @@ app.Floor.prototype.clear = function() {
             document.getElementById(i + '_' + j).classList.remove('head');
             document.getElementById(i + '_' + j).classList.remove('body');
         }
+    }
+};
+
+app.Floor.prototype.getRandomItem = function(list) {
+    return list[Math.floor(Math.random() * list.length)];
+};
+
+app.Floor.prototype.renderLetter = function(i) {
+    for (var _i in this.letters[i]) {
+        document.getElementById(this.letters[i][_i].x + '_' + this.letters[i][_i].y).classList.add('bit');
     }
 };
 

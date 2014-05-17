@@ -4,8 +4,5 @@
 	});
 	document.getElementById('start').onclick = function() {
 		snake.init();
-	}
-	document.getElementById('eat').onclick = function() {
-		snake.eat();
-	}
+	};
 })();

@@ -146,29 +146,51 @@ app.Snake.prototype.updateBody = function(newHead) {
         this.die();
     } else if (head.classList.contains('food')) {
         this.eat();
-        this.renderFood();
     }
 
     this.render();
 
-    this.floor.renderWord();
+    // this.floor.renderWord();
 };
 
 app.Snake.prototype.renderFood = function() {
-    var randX = Math.floor(Math.random() * this.lastX),
-        randY = Math.floor(Math.random() * this.lastY),
-        foodCell = document.getElementsByClassName('food')[0];
-    if (foodCell) {
-        foodCell.classList.remove('food');
+
+    var remainingWords = this.floor.remainingWords;
+
+    if (remainingWords.length > 0) {
+        var randomLetter = this.floor.getRandomItem(remainingWords),
+            randomCoordinates = this.floor.getRandomItem(randomLetter.coordinates);
+
+        this.food = {letter: randomLetter.letter, coordinates: randomCoordinates};
+
+        document.getElementById(randomCoordinates.x + '_' + randomCoordinates.y).classList.add('food');
+    } else {
+        window.clearInterval(this.interval);
+        alert('The end');
     }
-    document.getElementById(randX + '_' + randY).classList.add('food');
 };
 
 app.Snake.prototype.eat = function() {
     this.eating = true;
+    for (var _i = 0; _i < this.floor.remainingWords.length; _i++) {
+        var word = this.floor.remainingWords[_i];
+
+        if (word.letter === this.food.letter) {
+            word.timesEated = word.timesEated + 1;
+            document.getElementById(this.food.coordinates.x + '_' + this.food.coordinates.y).classList.remove('food');
+
+            if (word.timesEated === 2) {
+                this.floor.remainingWords.splice(_i, 1);
+                this.floor.renderLetter(word.letter);
+                break;
+            }
+        }
+    }
+
+    this.renderFood();
 };
 
 app.Snake.prototype.die = function() {
-    document.body.classList.add('death');
     window.clearInterval(this.interval);
+    document.body.classList.add('death');
 };

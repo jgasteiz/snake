@@ -53,13 +53,13 @@ app.Snake.prototype.render = function() {
     var className,
         bodyPart;
     for (var _i = 0; _i < this.body.length; _i++) {
-        bodypart = document.getElementById(this.body[_i].x + '_' + this.body[_i].y);
+        bodyPart = document.getElementById(this.body[_i].x + '_' + this.body[_i].y);
         if (_i === 0) {
             className = 'head';
         } else {
             className = 'body';
         }
-        bodypart.classList.add(className);
+        bodyPart.classList.add(className);
     }
 };
 
@@ -118,50 +118,47 @@ app.Snake.prototype.move = function() {
     this.updateBody({x: newX, y: newY});
 };
 
-app.Snake.prototype.updateBody = function(newHead) {
+/**
+ * Update the coordinates of the snake body: add a new head and pop the last
+ * part of the body unless the snake is eating.
+ * 
+ * @param  {[type]} newHead [description]
+ * @return {[type]}         [description]
+ */
+app.Snake.prototype.updateBody = function(newHead) {    
+    // Always add a new head to the body.
     this.body.unshift(newHead);
 
+    var head = this.body[0],
+        foodCoordinates = this.food.coordinates;
+
+    // If the snake is not eating, pop the last part of the body.
     if (this.eating === false) {
         this.body.pop();
     } else {
         this.eating = false;
     }
 
-    var head = document.getElementById(this.body[0].x + '_' + this.body[0].y);
-
-    if (head.classList.contains('body')) {
+    // Check if snake dies for crashing with itself.
+    if (this.floor.containsCoordinates(head, this.body.slice(0).slice(1)) === true) {
         this.die();
-    } else if (head.classList.contains('food')) {
+    }
+    // Check if snake eats for crashing with food.
+    else if (foodCoordinates.x === head.x && foodCoordinates.y === head.y) {
         this.eat();
     }
 
     this.render();
 };
 
-app.Snake.prototype.renderFood = function() {
-
-    if (this.floor.remainingWords.length > 0) {
-        var randomLetter = this.floor.getRandomItem(this.floor.remainingWords);
-        console.log('randomLetter', randomLetter);
-        var randomCoordinates = this.floor.getRandomItem(randomLetter.coordinates);
-        console.log('randomCoordinates', randomCoordinates);
-
-        if (randomCoordinates === undefined) {
-            debugger;
-        }
-
-        this.food = {letter: randomLetter.letter, coordinates: randomCoordinates};
-
-        document.getElementById(randomCoordinates.x + '_' + randomCoordinates.y).classList.add('food');
-    } else {
-        window.clearInterval(this.interval);
-        alert('The end');
-    }
-};
-
+/**
+ * The snake eats food and render a letter if it's the 2nd time the snake has
+ * eaten food from that letter.
+ * 
+ * @return {[type]} [description]
+ */
 app.Snake.prototype.eat = function() {
     this.eating = true;
-    console.log(this.floor.remainingWords.length);
     for (var _i = 0; _i < this.floor.remainingWords.length; _i++) {
         var word = this.floor.remainingWords[_i];
 
@@ -180,6 +177,31 @@ app.Snake.prototype.eat = function() {
     this.renderFood();
 };
 
+/**
+ * Render a bug in a random place between the remaining letters of the text.
+ * 
+ * @return {[type]} [description]
+ */
+app.Snake.prototype.renderFood = function() {
+
+    if (this.floor.remainingWords.length > 0) {
+        var randomLetter = this.floor.getRandomItem(this.floor.remainingWords);
+        var randomCoordinates = this.floor.getRandomItem(randomLetter.coordinates);
+
+        this.food = {letter: randomLetter.letter, coordinates: randomCoordinates};
+
+        document.getElementById(randomCoordinates.x + '_' + randomCoordinates.y).classList.add('food');
+    } else {
+        window.clearInterval(this.interval);
+        document.body.classList.add('win');
+    }
+};
+
+/**
+ * The game stops, everything turns read, you are dead.
+ * 
+ * @return {[type]} [description]
+ */
 app.Snake.prototype.die = function() {
     window.clearInterval(this.interval);
     document.body.classList.add('death');

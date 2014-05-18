@@ -409,6 +409,16 @@ app.Floor.prototype.getRandomItem = function(list) {
     return list[Math.floor(Math.random() * list.length)];
 };
 
+app.Floor.prototype.containsCoordinates = function(coordinates, list) {
+    for (var _i = 0; _i < list.length; _i++) {
+        var _item = list[_i];
+        if (coordinates.x === _item.x && coordinates.y === _item.y) {
+            return true;
+        }
+    }
+    return false;
+};
+
 app.Floor.prototype.renderLetter = function(i) {
     for (var _i in this.letters[i]) {
         document.getElementById(this.letters[i][_i].x + '_' + this.letters[i][_i].y).classList.add('bit');

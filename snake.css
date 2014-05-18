@@ -63,6 +63,17 @@ td.head {
 	background-image: url(img/body.png);
 }
 
+
+body.win td.body,
+body.win td.head {
+	background-image: none;
+}
+
+body.win td.body.bit,
+body.win td.head.bit {
+	background-image: url(img/letter.png);
+}
+
 td:last-child {
 	border-right: 1px solid rgba(0, 0, 0, 0.2);
 }

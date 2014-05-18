@@ -13,8 +13,10 @@ app.Snake = function(floor, options) {
 
     this.options = options;
     this.options.codes = {
-        37 : 'left',
-        39 : 'right'
+        37 : 'left',  // left arrow
+        39 : 'right',  // right arrow
+        65 : 'left',  // A
+        68 : 'right',  // D
     };
     this.options.directions = ['up', 'right', 'down', 'left'];
 
@@ -48,16 +50,16 @@ app.Snake.prototype.init = function() {
 app.Snake.prototype.render = function() {
     this.floor.clear();
 
-    var _className,
-        _bodyPart;
+    var className,
+        bodyPart;
     for (var _i = 0; _i < this.body.length; _i++) {
-        _bodypart = document.getElementById(this.body[_i].x + '_' + this.body[_i].y);
+        bodypart = document.getElementById(this.body[_i].x + '_' + this.body[_i].y);
         if (_i === 0) {
-            _className = 'head';
+            className = 'head';
         } else {
-            _className = 'body';
+            className = 'body';
         }
-        _bodypart.classList.add(_className);
+        bodypart.classList.add(className);
     }
 };
 
@@ -72,6 +74,7 @@ app.Snake.prototype.render = function() {
 app.Snake.prototype.handleKeyStroke = function(e) {
 	var key = e.keyCode || e.which,
         direction = this.options.codes[key];
+
     if (direction !== undefined) {
         if (direction === 'right') {
             this.options.directions.push(this.options.directions.shift());
@@ -87,48 +90,32 @@ app.Snake.prototype.handleKeyStroke = function(e) {
  * @return {[type]} [description]
  */
 app.Snake.prototype.move = function() {
-    var direction = this.options.directions[0];
+    var direction = this.options.directions[0],
+        newX = this.body[0].x,
+        newY = this.body[0].y;
     if (direction === 'left') {
-        this.moveLeft();
+        newX = this.body[0].x - 1;
+        if (newX < 0) {
+            newX = this.lastX;
+        }
     } else if (direction === 'right') {
-        this.moveRight();
+        newX = this.body[0].x + 1;
+        if (newX > this.lastX) {
+            newX = 0;
+        }
     } else if (direction === 'up') {
-        this.moveUp();
+        newY = this.body[0].y - 1;
+        if (newY < 0) {
+            newY = this.lastY;
+        }
     } else if (direction === 'down') {
-        this.moveDown();
+        newY = this.body[0].y + 1;
+        if (newY > this.lastY) {
+            newY = 0;
+        }
     }
-};
 
-app.Snake.prototype.moveUp = function() {
-    var newY = this.body[0].y - 1;
-    if (newY < 0) {
-        newY = this.lastY;
-    }
-    this.updateBody({x: this.body[0].x, y: newY});
-};
-
-app.Snake.prototype.moveDown = function() {
-    var newY = this.body[0].y + 1;
-    if (newY > this.lastY) {
-        newY = 0;
-    }
-    this.updateBody({x: this.body[0].x, y: newY});
-};
-
-app.Snake.prototype.moveLeft = function() {
-    var newX = this.body[0].x - 1;
-    if (newX < 0) {
-        newX = this.lastX;
-    }
-    this.updateBody({x: newX, y: this.body[0].y})
-};
-
-app.Snake.prototype.moveRight = function() {
-    var newX = this.body[0].x + 1;
-    if (newX > this.lastX) {
-        newX = 0;
-    }
-    this.updateBody({x: newX, y: this.body[0].y})
+    this.updateBody({x: newX, y: newY});
 };
 
 app.Snake.prototype.updateBody = function(newHead) {
@@ -149,17 +136,19 @@ app.Snake.prototype.updateBody = function(newHead) {
     }
 
     this.render();
-
-    // this.floor.renderWord();
 };
 
 app.Snake.prototype.renderFood = function() {
 
-    var remainingWords = this.floor.remainingWords;
+    if (this.floor.remainingWords.length > 0) {
+        var randomLetter = this.floor.getRandomItem(this.floor.remainingWords);
+        console.log('randomLetter', randomLetter);
+        var randomCoordinates = this.floor.getRandomItem(randomLetter.coordinates);
+        console.log('randomCoordinates', randomCoordinates);
 
-    if (remainingWords.length > 0) {
-        var randomLetter = this.floor.getRandomItem(remainingWords),
-            randomCoordinates = this.floor.getRandomItem(randomLetter.coordinates);
+        if (randomCoordinates === undefined) {
+            debugger;
+        }
 
         this.food = {letter: randomLetter.letter, coordinates: randomCoordinates};
 
@@ -172,6 +161,7 @@ app.Snake.prototype.renderFood = function() {
 
 app.Snake.prototype.eat = function() {
     this.eating = true;
+    console.log(this.floor.remainingWords.length);
     for (var _i = 0; _i < this.floor.remainingWords.length; _i++) {
         var word = this.floor.remainingWords[_i];
 

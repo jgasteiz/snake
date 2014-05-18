@@ -3,7 +3,7 @@
 		delay: 100
 	});
 	snake.init();
-	document.getElementById('start').onclick = function() {
+	document.getElementById('restart').onclick = function() {
 		window.location.reload();
 	};
 })();

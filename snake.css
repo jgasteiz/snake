@@ -1,5 +1,15 @@
 body {
 	background-color: #5fc248;
+	font-family: monospace, sans-serif;
+	margin: 0;
+	text-align: center;
+}
+
+button {
+	background-color: #DFDFDF;
+	border: 1px solid #CFCFCF;
+	border-bottom: 2px solid #AFAFAF;
+	padding: 10px 20px;
 }
 
 body.death {
@@ -13,15 +23,28 @@ body.death table {
 table {
 	background-image: url(img/grass-no-border.png);
 	border-spacing: 0;
-	margin: 0 auto;
+	height: 520px;
+	left: 50%;
+	margin-left: -330px;
+	margin-top: -300px;
+	position: absolute;
+	top: 50%;
+	width: 660px;
+}
+
+.instructions {
+	bottom: 20px;
+	left: 0;
+	position: absolute;
+	right: 0;
 }
 
 td {
 	background-size: contain;
 	border-left: 1px solid rgba(0, 0, 0, 0.2);
 	border-top: 1px solid rgba(0, 0, 0, 0.2);
-	height: 30px;
-	width: 30px;
+	height: 20px;
+	width: 20px;
 }
 
 td.bit {
